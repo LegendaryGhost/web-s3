@@ -22,30 +22,50 @@
         }
     }
 
-    function calculsalaire($nbj,$tauxJour){
-        return $nbj * $tauxJour;
-    }
-    function nombrejourOuvrable($dateDebut, $dateFin) {
-    
-        // Convertir les chaînes de date en objets DateTime
-        $dateDebutObj = new DateTime($dateDebut);
-        $dateFinObj = new DateTime($dateFin);
-    
-        // Initialiser un compteur pour les jours ouvrables
-        $nombreJoursOuvrables = 0;
-    
-        // Parcourir chaque jour entre la date de début et la date de fin
-        while ($dateDebutObj <= $dateFinObj) {
-            // Vérifier si le jour actuel n'est pas un week-end (samedi ou dimanche)
-            if ($dateDebutObj->format('N') < 6) { // 'N' retourne le jour de la semaine (1 pour lundi, 7 pour dimanche)
-                $nombreJoursOuvrables++;
-            }
-    
-            // Ajouter un jour à $dateDebutObj
-            $dateDebutObj->modify('+1 day');
+    function createTeaThe($nom, $occupation, $rendementMensuel) {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("INSERT INTO tea_the (nom, occupation, rendement_mensuel) VALUES (:nom, :occupation, :rendementMensuel)");
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':occupation', $occupation);
+            $stmt->bindParam(':rendementMensuel', $rendementMensuel);
+            $stmt->execute();
+            echo "Nouvelle entrée créée avec succès.";
+        } catch (PDOException $e) {
+            echo "Erreur lors de la création : " . $e->getMessage();
         }
-    
-        return $nombreJoursOuvrables;
     }
+
+    function updateTeaThe($id, $nom, $occupation, $rendementMensuel) {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("UPDATE tea_the SET nom = :nom, occupation = :occupation, rendement_mensuel = :rendement_mensuel WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':occupation', $occupation);
+            $stmt->bindParam(':rendement_mensuel', $rendementMensuel);
+            $stmt->execute();
+            echo "Enregistrement mis à jour avec succès.";
+        } catch (PDOException $e) {
+            echo "Erreur ! : " . $e->getMessage();
+            die();
+        }
+    }
+
+    function deleteTeaThe($id) {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("DELETE FROM tea_the WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            echo "Enregistrement supprimé avec succès.";
+        } catch (PDOException $e) {
+            echo "Erreur ! : " . $e->getMessage();
+            die();
+        }
+    }
+    
+    
+    
     
 ?>

@@ -24,11 +24,11 @@ CREATE TABLE tea_parcelle (
 );
 
 CREATE TABLE tea_cueilleur (
-    id INT PRIMARY KEY AUTOINCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255) NOT NULL,
-    genre ENUM('homme','femme') NOT NULL,
+    genre ENUM('homme', 'femme') NOT NULL,
     salaire DECIMAL(10, 2) NOT NULL,
-    date_naissance DATE NOT
+    date_naissance DATE NOT NULL
 );
 
 CREATE TABLE tea_categorie_depense (
