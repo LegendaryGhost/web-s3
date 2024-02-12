@@ -1,17 +1,19 @@
 <?php
+
     function connection(){
-        $user='ETU002547';
-        $pass='MP9DzCGc8ipr';
-        $dsn='mysql:host=172.10.0.113;port=3306;dbname=..';
+        $config = require 'config_base.php';
         
         static $connection = null;
-        if($connection === null){
+        if ($connection === null) {
             try {
-                $connection = new PDO($dsn, $user, $pass);
-                echo "Connecte";
-                
+                $dsn = $config['server'] .
+                    ':host=' . $config['host'] .
+                    (isset($config['port']) ? ';port=' . $config['port'] : '') .
+                    ';dbname=' . $config['database'];
+    
+                $connection = new PDO($dsn, $config['user'], $config['pass']);
             } catch (PDOException $e) {
-                echo "Erreur ! : " . $e->getMessage();
+                print "Erreur ! : " . $e->getMessage();
                 die();
             }
         }
