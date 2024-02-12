@@ -38,6 +38,20 @@
         }
     }
 
+    function getTeaTheById($id) {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM tea_the");
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur ! : " . $e->getMessage();
+            die();
+        }
+    }
+    
+
     function updateTeaThe($id, $nom, $occupation, $rendementMensuel) {
         $pdo = connection();
         try {
@@ -85,6 +99,31 @@
         }
     }
 
+    function getParcelleById($id) {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM tea_parcelle WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération de la parcelle : " . $e->getMessage();
+            die();
+        }
+    }
+    
+    function getAllParcelles() {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->query("SELECT * FROM tea_parcelle");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des parcelles : " . $e->getMessage();
+            die();
+        }
+    }
+    
+
     function updateParcelle($id, $idThe, $nom, $surface) {
         $pdo = connection();
         try {
@@ -99,7 +138,7 @@
             echo "Erreur lors de la mise à jour de la parcelle : " . $e->getMessage();
             die();
         }
-    }
+    }    
 
 
     function deleteParcelle($id) {
@@ -202,6 +241,31 @@
             die();
         }
     }
+
+    function getCategorieDepenseById($id) {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM tea_categorie_depense WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération de la catégorie de dépense : " . $e->getMessage();
+            die();
+        }
+    }
+    
+    function getAllCategoriesDepenses() {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->query("SELECT * FROM tea_categorie_depense");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des catégories de dépenses : " . $e->getMessage();
+            die();
+        }
+    }
+    
 
     function updateCategorieDepense($id, $nom) {
         $pdo = connection();
