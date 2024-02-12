@@ -1,10 +1,11 @@
 <?php 
     require_once("connection.php");
 
+    // null si tsy misy
     function checkLoging($username,$mdp){
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("SELECT * FROM employe WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT * FROM tea_user WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
         
