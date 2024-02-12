@@ -294,19 +294,92 @@
         }
     }
     
-    
-    
-    
-    
-    
-    
+function getTotal_a_cueillirByParcelle($id){
+    $pdo = connection();
+    try {
+        // Préparation de la requête d'insertion
+        $sql = "select total_kg_mois as reste_a_cueillir  from v_infoparcelle where id = :idparcelle";        
+        $stmt = $pdo->prepare($sql);
+        
+        // Liaison des paramètres
+        $stmt->bindParam(':idparcelle', $id);
+        // Exécution de la requête
+        $stmt->execute();
+        $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $donne;
+    } catch (PDOException $e) {
+        echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+        die();
+    }
+}
 
+// Avoir le reste que l'on peut cueillir dans un parcelle a une date donnée, false si il y aucun cueillete au mois et annee donnée
+function getResteACueillirByparcelleBydate($id,$mois,$annee){
+    $pdo = connection();
+    try {
+        // Préparation de la requête d'insertion
+        $sql = "select idparcelle,reste_a_cueillir from v_poidsparcelle where idparcelle = :id and mois = :mois and annee = :annee;";
+        $stmt = $pdo->prepare($sql);
+        
+        // Liaison des paramètres
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':mois', $mois);
+        $stmt->bindParam(':annee', $annee);
+        // Exécution de la requête
+        $stmt->execute();
+        $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$donne){
+            return getTotal_a_cueillirByParcelle($id);
+        }
+        return $donne;
+    } catch (PDOException $e) {
+        echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+        die();
+    }
+}
 
+function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $poids) {
+    $pdo = connection(); // Assurez-vous que cette fonction retourne votre objet PDO.
+    $reponse = array();
+    try {
+        $dateObject = new DateTime($dateCueillette);
+
+        // Pour récupérer l'année
+        $year = $dateObject->format("Y");
+
+        // Pour récupérer le mois
+        $month = $dateObject->format("m");
     
-    
-    
-    
-    
-    
-    
+        $reste = getResteACueillirByparcelleBydate($idParcelle,$month,$year);
+        if($reste['reste_a_cueillir']>$poids){
+         // Préparation de la requête d'insertion
+            $sql = "INSERT INTO tea_cueillette (id_cueilleur, id_parcelle, date_cueillette, poids) VALUES (:id_cueilleur, :id_parcelle, :date_cueillette, :poids)";
+            $stmt = $pdo->prepare($sql);
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':id_cueilleur', $idCueilleur);
+            $stmt->bindParam(':id_parcelle', $idParcelle);
+            $stmt->bindParam(':date_cueillette', $dateCueillette);
+            $stmt->bindParam(':poids', $poids);
+            
+            // Exécution de la requête
+            $stmt->execute();
+            $reponse=[
+                'succes' => true,
+                'message' => 'insertion reussie'
+            ];
+        }
+        else{
+            $reponse=[
+                'succes' => false,
+                'message' => 'Poids superieur au reste dans la parcelle'
+            ];
+        }
+        return $reponse;
+       
+    } catch (PDOException $e) {
+        echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+        die();
+    }
+} 
 ?>
