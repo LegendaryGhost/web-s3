@@ -15,7 +15,7 @@ CREATE TABLE tea_parcelle (
 );
 
 CREATE TABLE tea_cueilleur (
-    id INT PRIMARY KEY AUTOINCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255) NOT NULL,
     genre ENUM('homme','femme') NOT NULL,
     salaire DECIMAL(10, 2) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE tea_cueilleur (
 );
 
 CREATE TABLE tea_categorie_depense (
-    id INT PRIMARY KEY AUTOINCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255) NOT NULL
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE tea_cueillette (
 );
 
 CREATE TABLE tea_depense (
-    id INT PRIMARY KEY AUTOINCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     id_categorie INT NOT NULL,
     date_depense DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     montant DECIMAL(10,2) NOT NULL,
