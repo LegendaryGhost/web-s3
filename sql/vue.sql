@@ -27,6 +27,7 @@ SELECT
     vp.total_kg_mois,
     SUM(tc.poids) AS total_poids_cueilli,
     (vp.total_kg_mois - SUM(tc.poids)) AS reste_a_cueillir,
+    tc.date_cueillette,
     MONTH(tc.date_cueillette) AS mois,
     YEAR(tc.date_cueillette) AS annee
 FROM 

@@ -382,4 +382,26 @@ function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $po
         die();
     }
 } 
+
+    // la reponse est $variable['TotalCueilli']
+    function getTotalPoidsBtwDate($datedebut,$dateFin){
+        $pdo = connection();
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "select sum(total_poids_cueilli) as TotalCueilli from v_poidsparcelle where date_cueillette between :dateDebut and :dateFin";
+            $stmt = $pdo->prepare($sql);
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':dateDebut', $datedebut);
+            $stmt->bindParam(':dateFin', $dateFin);
+            // Exécution de la requête
+            $stmt->execute();
+            $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $donne;
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+            die();
+        }
+
+    }
 ?>
