@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../fonction.php';
+require_once '../../route.php';
 
 if (isset($_POST['id'], $_POST['nom'], $_POST['genre'], $_POST['salaire'], $_POST['dateNaissance'])) {
     extract($_POST);
@@ -24,7 +25,7 @@ if (isset($_POST['id'], $_POST['nom'], $_POST['genre'], $_POST['salaire'], $_POS
         updateCueilleur($id, $nom, $genre, $salaire, $dateNaissance);
     }
     
-    echo json_encode($reponse);
+    header('Location : ' . MAIN_URL . 'pages/admin/cueilleur.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
 }
 
 ?>

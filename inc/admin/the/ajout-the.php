@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../fonction.php';
+require_once '../../route.php';
 
 if (isset($_POST['nom'], $_POST['occupation'], $_POST['rendement'])) {
     extract($_POST);
@@ -29,7 +30,7 @@ if (isset($_POST['nom'], $_POST['occupation'], $_POST['rendement'])) {
         createTeaThe($nom, $occupation, $rendement);
     }
     
-    echo json_encode($reponse);
+    header('Location : ' . MAIN_URL . 'pages/admin/the.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
 }
 
 ?>

@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../fonction.php';
+require_once '../../route.php';
 
 if (isset($_POST['idThe'], $_POST['nom'], $_POST['surface'])) {
     extract($_POST);
@@ -24,7 +25,7 @@ if (isset($_POST['idThe'], $_POST['nom'], $_POST['surface'])) {
         createParcelle($idThe, $nom, $surface);
     }
     
-    echo json_encode($reponse);
+    header('Location : ' . MAIN_URL . 'pages/admin/parcelle.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
 }
 
 ?>
