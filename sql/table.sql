@@ -27,21 +27,13 @@ CREATE TABLE tea_cueilleur (
     id INT PRIMARY KEY AUTOINCREMENT,
     nom VARCHAR(255) NOT NULL,
     genre ENUM('homme','femme') NOT NULL,
+    salaire DECIMAL(10, 2) NOT NULL,
     date_naissance DATE NOT
 );
 
 CREATE TABLE tea_categorie_depense (
     id INT PRIMARY KEY AUTOINCREMENT,
     nom VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE tea_salaire_cueilleur (
-    id_cueilleur INT,
-    id_the INT,
-    salaire DECIMAL(10, 2) NOT NULL,
-    PRIMARY KEY (id_cueilleur, id_the),
-    CONSTRAINT fk_salaire_cueilleur FOREIGN KEY (id_cueilleur) REFERENCES tea_cueilleur(id),
-    CONSTRAINT fk_salaire_the FOREIGN KEY (id_the) REFERENCES tea_the(id)
 );
 
 CREATE TABLE tea_cueillette (
