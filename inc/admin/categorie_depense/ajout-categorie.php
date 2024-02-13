@@ -20,7 +20,7 @@ if (isset($_POST['nom'])) {
         createCategorieDepense($nom);
     }
 
-    header('Location : ' . MAIN_URL . 'pages/admin/gestion-categorie.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
+    header('Location: ' . MAIN_URL . 'pages/admin/back-office.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
 }
 
 ?>
