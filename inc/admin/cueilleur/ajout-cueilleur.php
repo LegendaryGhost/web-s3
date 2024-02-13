@@ -25,7 +25,7 @@ if (isset($_POST['nom'], $_POST['genre'], $_POST['salaire'], $_POST['dateNaissan
         createCueilleur($nom, $genre, $salaire, $dateNaissance);
     }
 
-    header('Location: ' . MAIN_URL . 'pages/admin/gestion-cueilleur.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
+    header('Location: ' . MAIN_URL . 'pages/admin/back-office.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
 }
 
 ?>

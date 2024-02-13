@@ -111,15 +111,10 @@
 
     function deleteTeaThe($id) {
         $pdo = connection();
-        try {
-            $stmt = $pdo->prepare("DELETE FROM tea_the WHERE id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            echo "Enregistrement supprimé avec succès.";
-        } catch (PDOException $e) {
-            echo "Erreur ! : " . $e->getMessage();
-            die();
-        }
+        $stmt = $pdo->prepare("DELETE FROM tea_the WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        echo "La variété de thé a bien été supprimée.";
     }
 
 

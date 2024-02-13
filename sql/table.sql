@@ -34,7 +34,7 @@ CREATE TABLE tea_cueilleur (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255) NOT NULL,
     genre ENUM('homme', 'femme') NOT NULL,
-    salaire DECIMAL(10, 2) NOT NULL,
+    salaire DECIMAL(10, 2) NOT NULL DEFAULT 0,
     date_naissance DATE NOT NULL
 );
 -- partie 2
