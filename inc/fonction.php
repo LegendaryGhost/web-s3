@@ -338,50 +338,7 @@ function getResteACueillirByparcelleBydate($id,$mois,$annee){
     }
 }
 
-function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $poids) {
-    $pdo = connection(); // Assurez-vous que cette fonction retourne votre objet PDO.
-    $reponse = array();
-    try {
-        $dateObject = new DateTime($dateCueillette);
-
-        // Pour récupérer l'année
-        $year = $dateObject->format("Y");
-
-        // Pour récupérer le mois
-        $month = $dateObject->format("m");
-    
-        $reste = getResteACueillirByparcelleBydate($idParcelle,$month,$year);
-        if($reste['reste_a_cueillir']>$poids){
-         // Préparation de la requête d'insertion
-            $sql = "INSERT INTO tea_cueillette (id_cueilleur, id_parcelle, date_cueillette, poids) VALUES (:id_cueilleur, :id_parcelle, :date_cueillette, :poids)";
-            $stmt = $pdo->prepare($sql);
-            
-            // Liaison des paramètres
-            $stmt->bindParam(':id_cueilleur', $idCueilleur);
-            $stmt->bindParam(':id_parcelle', $idParcelle);
-            $stmt->bindParam(':date_cueillette', $dateCueillette);
-            $stmt->bindParam(':poids', $poids);
-            
-            // Exécution de la requête
-            $stmt->execute();
-            $reponse=[
-                'succes' => true,
-                'message' => 'insertion reussie'
-            ];
-        }
-        else{
-            $reponse=[
-                'succes' => false,
-                'message' => 'Poids superieur au reste dans la parcelle'
-            ];
-        }
-        return $reponse;
-       
-    } catch (PDOException $e) {
-        echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
-        die();
-    }
-} 
+//================== METY MIOVAAAAAA
 
     // la reponse est $variable['TotalCueilli']
     function getTotalPoidsBtwDate($datedebut,$dateFin){
@@ -457,4 +414,214 @@ function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $po
             die();
         }
     }
+
+
+    // avoir les mois configurable
+
+    function getMoisRegeneration() {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("SELECT int_mois, mois, regeneration FROM v_regenerer");
+            $stmt->execute();
+    
+            // Récupérer les résultats
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des données : " . $e->getMessage();
+            die();
+        }
+    }
+
+
+
+    function getMoisRegenerationPrecedent($moisActuel) {
+        $pdo = connection();
+        // Requête pour trouver le dernier mois de régénération avant le mois actuel
+        $sql = "SELECT int_mois 
+                FROM tea_mois_regenererer 
+                WHERE int_mois < :moisActuel
+                ORDER BY int_mois DESC
+                LIMIT 1";
+    
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':moisActuel', $moisActuel, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // Si un mois de régénération est trouvé avant le mois actuel
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($result) {
+                return $result['int_mois'];
+            } else {
+                // Si aucun mois de régénération n'est trouvé avant le mois actuel, cherchez le dernier mois de régénération de l'année
+                $sql = "SELECT int_mois 
+                        FROM tea_mois_regenererer 
+                        ORDER BY int_mois DESC
+                        LIMIT 1";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                return $result['int_mois']; // Retourne le dernier mois de régénération de l'année ou null si non trouvé
+            }
+        } catch (PDOException $e) {
+            echo "Erreur lors de la recherche du mois de régénération précédent : " . $e->getMessage();
+            die();
+        }
+    }
+
+    function getTotalCueilleByDateByParcelle($id,$dateD,$dateF){
+        $pdo = connection();
+         // Préparation de la requête d'insertion
+         $sql ="SELECT
+                    id_parcelle,
+                    SUM(poids) AS totalPoidsCueilli
+                FROM
+                    tea_cueillette
+                WHERE
+                    date_cueillette >= :dateD AND
+                    date_cueillette <= :dateF AND
+                    id_parcelle = :id
+                GROUP BY
+                    id_parcelle";
+        $stmt = $pdo->prepare($sql);
+         
+         // Liaison des paramètres
+         $stmt->bindParam(':dateD', $dateD);
+         $stmt->bindParam(':dateF', $dateF);
+         $stmt->bindParam(':id',$id);
+         // Exécution de la requête
+         $stmt->execute();
+         $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+         return $donne;
+    }
+
+    function getTotalCueilleByDate($dateD,$dateF){
+        $pdo = connection();
+         // Préparation de la requête d'insertion
+         $sql ="SELECT
+                    id_parcelle,
+                    SUM(poids) AS totalPoidsCueilli
+                FROM
+                    tea_cueillette
+                WHERE
+                    date_cueillette >= :dateD AND
+                    date_cueillette <= :dateF AND
+                GROUP BY
+                    id_parcelle";
+        $stmt = $pdo->prepare($sql);
+         
+         // Liaison des paramètres
+         $stmt->bindParam(':dateD', $dateD);
+         $stmt->bindParam(':dateF', $dateF);
+         // Exécution de la requête
+         $stmt->execute();
+         $donne = $stmt->fetchAll(PDO::FETCH_ASSOC);
+         return $donne;
+    }
+
+    // get total que l'on peut prendre 
+
+    function getParcelleInfoById($idParcelle) {
+        $pdo = connection();
+        try {
+            // Préparation de la requête SQL pour récupérer les informations
+            $stmt = $pdo->prepare("SELECT id, nomParcelle, total_kg_mois FROM v_infoparcelle WHERE id = :idParcelle");
+            
+            // Liaison du paramètre :idParcelle à la valeur fournie à la fonction
+            $stmt->bindParam(':idParcelle', $idParcelle, PDO::PARAM_INT);
+            
+            // Exécution de la requête
+            $stmt->execute();
+            
+            // Récupération du résultat
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Vérification pour s'assurer qu'un résultat a été trouvé
+            if ($result) {
+                return $result;
+            } else {
+                return null; // Aucune parcelle trouvée avec cet ID
+            }
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des informations de la parcelle : " . $e->getMessage();
+            die();
+        }
+    }
+    
+
+    // getPoidsRestant par mois
+
+    function getPoidsRestantByMonthByParcelle($id_parcelle,$date){
+        $dateObject = new DateTime($date);
+
+        $year = $dateObject->format("Y");
+        // Pour récupérer le mois
+        $month =$dateObject->format("m");
+
+        $monthRegen =(int) getMoisRegenerationPrecedent($month);
+        if($month<$monthRegen){
+            $year--;
+        }
+        if($monthRegen<10){
+            $monthRegen = (int) "0".$monthRegen;
+        }
+        
+        $dateRegener = $year."-".$monthRegen."-1";
+        echo $dateRegener;
+
+        $donne = getTotalCueilleByDateByParcelle($id_parcelle,$dateRegener,$date);
+        $infoParcelle = getParcelleInfoById($id_parcelle);
+
+        var_dump($donne);
+        var_dump($infoParcelle);
+
+        return $infoParcelle['total_kg_mois'] - $donne['totalPoidsCueilli'];
+    }
+
+    function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $poids) {
+        $pdo = connection(); // Assurez-vous que cette fonction retourne votre objet PDO.
+        $reponse = array();
+        try {
+            $reste = getPoidsRestantByMonthByParcelle($idParcelle,$dateCueillette);
+            if($reste>$poids){
+             // Préparation de la requête d'insertion
+                $sql = "INSERT INTO tea_cueillette (id_cueilleur, id_parcelle, date_cueillette, poids) VALUES (:id_cueilleur, :id_parcelle, :date_cueillette, :poids)";
+                $stmt = $pdo->prepare($sql);
+                
+                // Liaison des paramètres
+                $stmt->bindParam(':id_cueilleur', $idCueilleur);
+                $stmt->bindParam(':id_parcelle', $idParcelle);
+                $stmt->bindParam(':date_cueillette', $dateCueillette);
+                $stmt->bindParam(':poids', $poids);
+                
+                // Exécution de la requête
+                $stmt->execute();
+                $reponse=[
+                    'succes' => true,
+                    'message' => 'insertion reussie'
+                ];
+            }
+            else{
+                $reponse=[
+                    'succes' => false,
+                    'message' => 'Poids superieur au reste dans la parcelle'
+                ];
+            }
+            return $reponse;
+           
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+            die();
+        }
+    } 
+    
+
+
+
+
+    
+
+
+    
 ?>

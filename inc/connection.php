@@ -2,7 +2,7 @@
     function connection(){
         $user='ETU002547';
         $pass='MP9DzCGc8ipr';
-        $dsn='mysql:host=172.10.0.113;port=3306;dbname=..';
+        $dsn='mysql:host=172.10.0.113;port=3306;dbname=db_p16_ETU002547';
         
         static $connection = null;
         if($connection === null){
@@ -17,5 +17,4 @@
         }
         return $connection;
     } 
-    connection();
 ?>
