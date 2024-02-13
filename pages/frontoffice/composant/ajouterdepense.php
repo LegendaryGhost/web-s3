@@ -29,7 +29,7 @@
                             <input type="number" name="montant" class="form-control" aria-label="montant" placeholder="Montant">
                         </div>
                         <div class="text-center">
-                        <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Valider</button>
+                            <button type="submit" class="btn-ajout btn bg-gradient-success w-100 my-4 mb-2">Ajouter</button>
                         </div>
                     </form>
                 </div>
@@ -51,7 +51,6 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Categorie</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date_de_depenses</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Montant</th>
-                                        <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,11 +68,6 @@
                                             </td>
                                             <td class="align-middle text-center text-sm">
                                                 <span class="badge badge-sm bg-gradient-success"><?php echo $listeDepense[$i]['montant']; ?></span>
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                                                    Edit
-                                                </a>
                                             </td>
                                         </tr>
                                     <?php } ?>

@@ -674,7 +674,7 @@ function getResteACueillirByparcelleBydate($id,$mois,$annee){
         $pdo = connection();
         try {
             // Préparation de la requête SQL pour sélectionner toutes les entrées de la vue v_depenses
-            $stmt = $pdo->prepare("SELECT id_categorie, nom, date_depense, montant FROM v_depenses");
+            $stmt = $pdo->prepare("SELECT id_categorie, nom, date_depense, montant FROM v_depenses ORDER BY date_depense DESC");
             
             // Exécution de la requête
             $stmt->execute();
