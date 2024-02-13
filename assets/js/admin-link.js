@@ -15,7 +15,7 @@ window.addEventListener('load', function() {
 
             const sidenavLinks = document.querySelectorAll('#sidenav-main .nav-item[data-target]');
             sidenavLinks.forEach(link => {
-                link.classList.remove('active')
+                link.querySelector('.nav-link').classList.remove('active')
             });
 
             // Cache tous les divs contenant le contenu
@@ -28,7 +28,8 @@ window.addEventListener('load', function() {
             const targetId = this.getAttribute('data-target').substring(1); // Enlève le # initial
             const targetContainer = document.getElementById(targetId);
             if (targetContainer) {
-                this.classList.add('data-active');
+                console.log(this.classList);
+                this.querySelector('.nav-link').classList.add('active');
                 targetContainer.classList.add('active');
             }
         });

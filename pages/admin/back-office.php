@@ -49,7 +49,7 @@ if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['t
   <script src="<?= JS ?>plugins/smooth-scrollbar.min.js"></script>
   <script src="<?= JS ?>plugins/chartjs.min.js"></script>
   <script src="<?= JS ?>xhr.js"></script>
-  <script src="<?= JS ?>crud-the.js"></script>
+  <script src="<?= JS ?>crud-dashboard.js"></script>
   <script src="<?= JS ?>admin-link.js"></script>
   
  <script>

@@ -46,7 +46,7 @@ const supprimerThe = event => {
     );
 };
 
-const genereThesLignes = (thes) => {
+const genererThesLignes = (thes) => {
     theListeTbody.textContent = '';
 
     // Iterate over the array and create table rows
@@ -131,29 +131,76 @@ const genereThesLignes = (thes) => {
     });
 }
 
+const genererParcellesLignes = parcelles => {
+    parcelleListeTbody.textContent = '';
+
+    // Iterate over the array and create table rows
+    parcelles.forEach(parcelle => {
+        var tr = document.createElement('tr');
+        
+        // First cell with ID
+        var tdId = document.createElement('td');
+        tdId.innerText = parcelle.id;
+        tr.appendChild(tdId);
+
+        // Second cell with nom
+        var tdNom = document.createElement('td');
+        tdNom.innerText = parcelle.nom;
+        tr.appendChild(tdNom);
+
+        // Third cell with variety of tea
+        var tdVariete = document.createElement('td');
+        tdVariete.innerText = parcelle.variete; // Assuming variete is a property of the parcelle object
+        tr.appendChild(tdVariete);
+
+        // Fourth cell with surface
+        var tdSurface = document.createElement('td');
+        tdSurface.innerText = `${parcelle.surface} m^2`;
+        tr.appendChild(tdSurface);
+
+        // Append the row to the table body
+        parcelleListeTbody.appendChild(tr);
+    });
+}
+
 const chargerVarietesThe = () => {
     sendXHRRequest(theCrudDir + 'liste-the.php').then(
         reponse => {
             varietesThe = JSON.parse(reponse);
-            genereThesLignes(varietesThe);
+            genererThesLignes(varietesThe);
         }
     );
 };
 
+const chargerParcelles = () => {
+    sendXHRRequest(adminDir + '/parcelle/liste-parcelle.php').then(
+        reponse => {
+            parcelles = JSON.parse(reponse);
+            genererParcellesLignes(parcelles);
+        }
+    );
+}
+
 let theForm;
 let theFormResetBtn;
 let theListeTbody;
+let parcelleListeTbody;
 let theCrudDir;
+let adminDir;
 let varietesThe = [];
+let parcelles = [];
 
 window.addEventListener('load', () => {
     theForm = document.getElementById('form-the');
     theFormResetBtn = theForm.querySelector('button[type="reset"]');
     theListeTbody = document.querySelector('#table-liste-the tbody');
+    parcelleListeTbody = document.querySelector('#table-liste-parcelle tbody');
 
     theCrudDir = theForm.action;
+    adminDir = theCrudDir + '../';    
 
     chargerVarietesThe();
+    chargerParcelles();
 
     theForm.addEventListener('submit', envoyerFormulaire);
     theFormResetBtn.addEventListener('click', viderModifForm);

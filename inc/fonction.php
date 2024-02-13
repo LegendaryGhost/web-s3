@@ -125,7 +125,7 @@ function getParcelleById($id) {
 function getAllParcelles() {
     $pdo = connection();
     try {
-        $stmt = $pdo->query("SELECT * FROM tea_parcelle");
+        $stmt = $pdo->query("SELECT * FROM tea_parcelle LEFT JOIN tea_the ON tea_parcelle.id_the = tea_the.id");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Erreur lors de la récupération des parcelles : " . $e->getMessage();
