@@ -15,6 +15,9 @@ CREATE TABLE tea_the (
     occupation DECIMAL(10,2) NOT NULL,
     rendement_mensuel DECIMAL(10,2) NOT NULL
 );
+-- partie 2
+alter table tea_the
+add COLUMN prix_vente DECIMAL(10,2) NOT NULL;
 
 CREATE TABLE tea_parcelle (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -31,6 +34,15 @@ CREATE TABLE tea_cueilleur (
     salaire DECIMAL(10, 2) NOT NULL,
     date_naissance DATE NOT NULL
 );
+-- partie 2
+alter table tea_cueilleur
+add COLUMN poids_min DECIMAL(10,2) not null;
+
+alter table tea_cueilleur
+add COLUMN bonus_montant DECIMAL(10,2) not null;
+
+alter table tea_cueilleur
+add COLUMN malus_montant DECIMAL(10,2) not null;
 
 CREATE TABLE tea_categorie_depense (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -54,3 +66,7 @@ CREATE TABLE tea_depense (
     montant DECIMAL(10,2) NOT NULL,
     CONSTRAINT fk_depense_categorie FOREIGN KEY (id_categorie) REFERENCES tea_categorie_depense (id)
 );
+
+-- partie 2, Nouveaux tables
+
+
