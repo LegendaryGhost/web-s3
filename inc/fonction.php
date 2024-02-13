@@ -600,7 +600,6 @@ function getResteACueillirByparcelleBydate($id,$mois,$annee){
         }
         
         $dateRegener = $year."-".$monthRegen."-1";
-        echo $dateRegener;
 
         $donne = getTotalCueilleByDateByParcelle($id_parcelle,$dateRegener,$date);
         $infoParcelle = getParcelleInfoById($id_parcelle);

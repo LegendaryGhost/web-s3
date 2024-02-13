@@ -1,10 +1,11 @@
 <?php
 
 require_once '../../inc/route.php';
+require_once('../../inc/fonction.php');
 
 session_start();
 
-if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['typeUser'] != 'user') {
+if (!isset($_SESSION['idUser'])) {
   $message = "Vous n'avez pas l'autorisation d'accéder à cette page";
   header('Location: ' . MAIN_URL . 'pages/admin/?erreur=' . urlencode($message));
 }
@@ -37,8 +38,8 @@ if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['t
   <?php require 'composant/aside.php'; ?>
   <main class="main-content position-relative min-height-vh-100 h-100 mt-1 border-radius-lg ">
     <?php require 'composant/top-bar.php'; ?>
-    <?php require 'composant/ajouterdepense.php'; ?>
     <?php require 'composant/ajoutcueillette.php'; ?>
+    <?php require 'composant/ajouterdepense.php'; ?>
  
   </main>
    <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
@@ -50,7 +51,7 @@ if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['t
   <script src="<?= JS ?>plugins/smooth-scrollbar.min.js"></script>
   <script src="<?= JS ?>plugins/chartjs.min.js"></script>
   <script src="<?= JS ?>xhr.js"></script>
-  <script src="<?= JS ?>crud-the.js"></script>
+  <script src="<?= JS ?>ajax-cueillette.js"></script>
   <script src="<?= JS ?>admin-link.js"></script>
   
  <script>

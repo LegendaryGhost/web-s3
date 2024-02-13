@@ -1,12 +1,15 @@
 <?php
-require_once('C:\xampp\htdocs\www\Exam\web-s3\inc\route.php');
-require_once('C:\xampp\htdocs\www\Exam\web-s3\inc\fonction.php');
-var_dump($_POST);
-if (isset($_POST['Cueilleur'], $_POST['Parcelle'], $_POST['date'], $_POST['poids'])) {
+require_once('../route.php');
+require_once('../fonction.php');
+
+if (isset($_POST['cueilleur'], $_POST['parcelle'], $_POST['date'], $_POST['poids'])) {
    
     extract($_POST);
 
-    $reponse = [];
+    $reponse = $reponse = [
+        'success' => true,
+        'message' => 'Cueillette ajoutée'
+    ];
 
     if ($poids <= 0) {
         $reponse = [
@@ -14,13 +17,10 @@ if (isset($_POST['Cueilleur'], $_POST['Parcelle'], $_POST['date'], $_POST['poids
             'message' => 'Le poids doit être supérieur à 0'
         ];
     } else {
-        $reponse = insertIntoTeaCueillette($Cueilleur, $Parcelle, $date, $poids);
+        $reponse = insertIntoTeaCueillette($cueilleur, $parcelle, $date, $poids);
     }
 
     echo json_encode($reponse);
-}
-else{
-  //  header('Location:'.MAIN_URL.'pages/frontoffice/front.php');
 }
 
 ?>

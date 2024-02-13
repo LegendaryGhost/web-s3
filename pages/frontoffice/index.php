@@ -9,15 +9,12 @@
   <link rel="apple-touch-icon" sizes="76x76" href="<?= IMG ?>apple-icon.png">
   <link rel="icon" type="image/png" href="<?= IMG ?>favicon.png">
   <title>
-    Login admin
+    Login
   </title>
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Nucleo Icons -->
   <link href="<?= CSS ?>nucleo-icons.css" rel="stylesheet" />
   <link href="<?= CSS ?>nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="<?= CSS ?>nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="<?= CSS ?>soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
@@ -33,7 +30,7 @@
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
             <h1 class="text-white mb-2 mt-5">Bienvenu !</h1>
-            <p class="text-lead text-white">Gérer vos exploitations de thé avec nous.</p>
+            <p class="text-lead text-white">Insérer vos données sur l'exploitation de thé</p>
           </div>
         </div>
       </div>
@@ -46,7 +43,7 @@
               <h5>Connexion</h5>
             </div>
             <div class="card-body">
-              <form role="text-left" method="POST" action="<?= MAIN_URL ?>inc/admin/traitement-login.php">
+              <form role="text-left" method="POST" action="<?= MAIN_URL ?>inc/user/traitement-login.php">
                 <?php if(isset($_GET['erreur']) && !empty($_GET['erreur'])):?>
                   <div class="alert alert-danger" role="alert"><?= urldecode($_GET['erreur']) ?></div>
                 <?php endif; ?>
@@ -55,7 +52,7 @@
                   <input name="username" value="user" type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon">
                 </div>
                 <div class="mb-3">
-                  <input name="mdp" value="4321" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                  <input name="mdp" value="1234" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
                 </div>
                 <div class="text-center">
                   <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Me connecter</button>
