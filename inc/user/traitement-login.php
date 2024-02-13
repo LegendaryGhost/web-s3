@@ -5,11 +5,11 @@
 
     if (isset($_POST['username'], $_POST['mdp'])) {
         extract($_POST);
-        $user = checkLoging($username, $mdp, 'admin');
+        $user = checkLoging($username, $mdp, 'user');
 
         if (is_null($user)) {
             $erreur = 'Nom d\'utilisateur ou mot de passe incorrect';
-            header("Location: " . MAIN_URL . "pages/admin/login.php?erreur=" . urlencode($erreur));
+            header("Location: " . MAIN_URL . "pages/user/login.php?erreur=" . urlencode($erreur));
         } else {
             session_start();
             $_SESSION['id_user'] = $user['iduser'];
@@ -18,7 +18,7 @@
         }
     } else {
         $erreur = 'Veuillez remplir tous les champs';
-        header("Location: " . MAIN_URL . "pages/admin/login.php?erreur=" . urlencode($erreur));
+        header("Location: " . MAIN_URL . "pages/user/login.php?erreur=" . urlencode($erreur));
     }
 
 ?>
