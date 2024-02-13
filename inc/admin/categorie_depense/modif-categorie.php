@@ -20,7 +20,7 @@ if (isset($_POST['id'], $_POST['nom'])) {
         updateCategorieDepense($id, $nom);
     }
 
-    header('Location : ' . MAIN_URL . 'pages/admin/categorie.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
+    header('Location : ' . MAIN_URL . 'pages/admin/gestion-categorie.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
 }
 
 ?>

@@ -7,7 +7,7 @@ if (isset($_POST['id'])) {
     extract($_POST);
     deleteParcelle($id);
 
-    header('Location : ' . MAIN_URL . 'pages/admin/parcelle.php');
+    header('Location: ' . MAIN_URL . 'pages/admin/gestion-parcelle.php');
 }
 
 ?>

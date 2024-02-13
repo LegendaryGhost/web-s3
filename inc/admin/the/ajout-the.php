@@ -29,8 +29,8 @@ if (isset($_POST['nom'], $_POST['occupation'], $_POST['rendement'])) {
     } else {
         createTeaThe($nom, $occupation, $rendement);
     }
-    
-    header('Location : ' . MAIN_URL . 'pages/admin/the.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
+ 
+    echo json_encode($reponse);
 }
 
 ?>

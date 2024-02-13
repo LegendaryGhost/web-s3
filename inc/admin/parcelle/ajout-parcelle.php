@@ -25,7 +25,7 @@ if (isset($_POST['idThe'], $_POST['nom'], $_POST['surface'])) {
         createParcelle($idThe, $nom, $surface);
     }
     
-    header('Location : ' . MAIN_URL . 'pages/admin/parcelle.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
+    header('Location: ' . MAIN_URL . 'pages/admin/gestion-parcelle.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
 }
 
 ?>

@@ -1,7 +1,6 @@
 <?php
 
 require_once '../../fonction.php';
-require_once '../../route.php';
 
 if (isset($_POST['id'], $_POST['nom'], $_POST['occupation'], $_POST['rendement'])) {
     extract($_POST);
@@ -29,8 +28,8 @@ if (isset($_POST['id'], $_POST['nom'], $_POST['occupation'], $_POST['rendement']
     } else {
         updateTeaThe($id, $nom, $occupation, $rendement);
     }
-    
-    header('Location : ' . MAIN_URL . 'pages/admin/the.php?succes=' . $reponse['succes'] . '&message=' . urlencode($reponse['message']));
+
+    echo json_encode($reponse);    
 }
 
 ?>
