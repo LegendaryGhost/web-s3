@@ -1,7 +1,19 @@
 
 /* Redéfinition */
+.alert-danger {
+    color: white;
+}
+
 .badge {
     font-size: 0.7rem;
+}
+
+.navbar-vertical.navbar-expand-xs {
+    overflow-y: unset;
+}
+
+body, a, p, strong, span, i, li, ol, button {
+    font-family: 'Roboto', sans-serif;
 }
 
 button {
