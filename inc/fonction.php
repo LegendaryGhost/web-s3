@@ -404,4 +404,20 @@ function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $po
         }
 
     }
+
+    function getTotalPoidsRestant(){
+        $pdo = connection();
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "select sum(reste_a_cueillir) as reste_cueilletteTotal from v_tea_resteAcueillir;";
+            $stmt = $pdo->prepare($sql);
+            // Exécution de la requête
+            $stmt->execute();
+            $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $donne;
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+            die();
+        }
+    }
 ?>

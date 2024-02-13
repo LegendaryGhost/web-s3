@@ -37,7 +37,22 @@ JOIN
 GROUP BY 
     vp.id, vp.nomParcelle, vp.surface_m2, vp.nomthe, vp.nbpied, vp.total_kg_mois, MONTH(tc.date_cueillette), YEAR(tc.date_cueillette);
 
+Create or replace view v_tea_resteAcueillir as
+SELECT 
+  vpp.idparcelle,
+  vpp.reste_a_cueillir,
+  vpp.date_cueillette
+FROM 
+  v_poidsparcelle vpp
+INNER JOIN (
+    SELECT 
+      idparcelle, 
+      MAX(date_cueillette) as MaxDate
+    FROM 
+      v_poidsparcelle
+    GROUP BY 
+      idparcelle
+) vm ON vpp.idparcelle = vm.idparcelle AND vpp.date_cueillette = vm.MaxDate;
 
-select idparcelle,reste_a_cueillir from v_poidsparcelle where mois = 2 and annee = 2024;
-
+select sum(reste_a_cueillir) as reste_cueilletteTotal from v_tea_resteAcueillir;
 
