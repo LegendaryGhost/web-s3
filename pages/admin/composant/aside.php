@@ -3,7 +3,7 @@
     <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
     <a class="navbar-brand m-0" href="https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html" target="_blank">
     <img src="<?= IMG ?>logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-    <span class="ms-1 font-weight-bold">Options</span>
+    <span class="ms-1 font-weight-bold">Exploitation de thé</span>
     </a>
 </div>
 <hr class="horizontal dark mt-0">
@@ -25,7 +25,7 @@
                 </g>
             </svg>
         </div>
-        <span class="nav-link-text ms-1">Gérer les variétés de thé</span>
+        <span class="nav-link-text ms-1">Gérer les thés</span>
         </a>
     </li>
     <li class="nav-item" data-target="#gestion-parcelle">

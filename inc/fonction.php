@@ -41,7 +41,18 @@
             die();
         }
     }
-    
+
+    function getAllTeaThe() {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM tea_the");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur ! : " . $e->getMessage();
+            die();
+        }
+    }
 
     function getTeaTheById($id) {
         $pdo = connection();
@@ -122,37 +133,46 @@
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':surface', $surface);
             $stmt->execute();
-            echo "Parcelle créée avec succès.";
         } catch (PDOException $e) {
             echo "Erreur lors de la création de la parcelle : " . $e->getMessage();
             die();
         }
     }
 
-    function getParcelleById($id) {
-        $pdo = connection();
-        try {
-            $stmt = $pdo->prepare("SELECT * FROM tea_parcelle WHERE id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Erreur lors de la récupération de la parcelle : " . $e->getMessage();
-            die();
-        }
+function getParcelleById($id) {
+    $pdo = connection();
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM tea_parcelle WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Erreur lors de la récupération de la parcelle : " . $e->getMessage();
+        die();
     }
-    
-    function getAllParcelles() {
-        $pdo = connection();
-        try {
-            $stmt = $pdo->query("SELECT * FROM tea_parcelle");
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Erreur lors de la récupération des parcelles : " . $e->getMessage();
-            die();
-        }
+}
+
+function getAllParcelles() {
+    $pdo = connection();
+    try {
+        $stmt = $pdo->query("
+            SELECT
+                tea_parcelle.id,
+                tea_parcelle.nom AS nom_parcelle,
+                tea_parcelle.id_the,
+                tea_the.nom AS nom_the,
+                tea_parcelle.surface
+            FROM tea_parcelle
+            LEFT JOIN tea_the
+                ON tea_parcelle.id_the = tea_the.id");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Erreur lors de la récupération des parcelles : " . $e->getMessage();
+        die();
     }
-    
+}
+
+
 
     function updateParcelle($id, $idThe, $nom, $surface) {
         $pdo = connection();
@@ -163,7 +183,6 @@
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':surface', $surface);
             $stmt->execute();
-            echo "Parcelle mise à jour avec succès.";
         } catch (PDOException $e) {
             echo "Erreur lors de la mise à jour de la parcelle : " . $e->getMessage();
             die();
