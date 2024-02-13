@@ -50,7 +50,18 @@
             die();
         }
     }
-    
+
+    function getAllTeaThe() {
+        $pdo = connection();
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM tea_the");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur ! : " . $e->getMessage();
+            die();
+        }
+    }
 
     function updateTeaThe($id, $nom, $occupation, $rendementMensuel) {
         $pdo = connection();
