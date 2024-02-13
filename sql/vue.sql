@@ -27,6 +27,7 @@ SELECT
     vp.total_kg_mois,
     SUM(tc.poids) AS total_poids_cueilli,
     (vp.total_kg_mois - SUM(tc.poids)) AS reste_a_cueillir,
+    tc.date_cueillette,
     MONTH(tc.date_cueillette) AS mois,
     YEAR(tc.date_cueillette) AS annee
 FROM 
@@ -36,7 +37,25 @@ JOIN
 GROUP BY 
     vp.id, vp.nomParcelle, vp.surface_m2, vp.nomthe, vp.nbpied, vp.total_kg_mois, MONTH(tc.date_cueillette), YEAR(tc.date_cueillette);
 
+CREATE OR REPLACE VIEW v_tea_resteAcueillir AS
+SELECT 
+  vpp.idparcelle,
+  vpp.nomparcelle,
+  vpp.reste_a_cueillir,
+  vpp.date_cueillette
+FROM 
+  v_poidsparcelle vpp
+INNER JOIN (
+    SELECT 
+      idparcelle, 
+      MAX(date_cueillette) AS MaxDate
+    FROM 
+      v_poidsparcelle
+    WHERE 
+      date_cueillette <= '2024-02-28' -- Date de fin spécifiée ici
+    GROUP BY 
+      idparcelle
+) vm ON vpp.idparcelle = vm.idparcelle AND vpp.date_cueillette = vm.MaxDate;
 
-select idparcelle,reste_a_cueillir from v_poidsparcelle where mois = 2 and annee = 2024;
-
+select sum(reste_a_cueillir) as reste_cueilletteTotal from v_tea_resteAcueillir;
 
