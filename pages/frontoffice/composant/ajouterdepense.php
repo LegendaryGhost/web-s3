@@ -1,28 +1,40 @@
-<div class="" data-toggle="">
-<div class="container">
-      <div class="row mt-lg-n10 mt-md-n11 mt-n10">
+<?php 
+    require_once('C:\xampp\htdocs\www\Exam\web-s3\inc\route.php');
+    require_once('C:\xampp\htdocs\www\Exam\web-s3\inc\fonction.php');
+  
+    $categorie = getAllCategoriesDepenses();
+
+    $listeDepense = getDepenses();
+
+
+?>
+
+
+<div class="tab-content active" data-toggle="ajouterdepense">
+    <div class="container">
+      <div class="row">
         <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
           <div class="card z-index-0">
             <div class="card-header text-center pt-4">
               <h5>Saisie de Depenses</h5>
             <div class="card-body">
-              <form role="form text-left">
+              <form role="form text-left" action = "<?php echo MAIN_URL.'inc/user/ajout-depense.php'; ?>" method = "post">
                 <div class="mb-3">
-                    <select name="Categorie" id="Categorie" class="form-control">
-                        <option value="Categorie1">Categorie1</option>
-                        <option value="Categorie2">Categorie2</option>
+                    <select name="categorie" id="Categorie" class="form-control">
+                        <?php for($i=0;$i<count($categorie);$i++) { ?>
+                            <option value="<?php echo $categorie[$i]['id'];?>" ><?php echo $categorie[$i]['nom'];?></option>
+                        <?php } ?>
                        </select>
                 </div>
                 <div class="mb-3">
                     <input type="date" name="date_depenses" class="form-control" placeholder="Date_de_depenses">
                 </div>
                 <div class="mb-3">
-                    <input type="number" class="form-control" aria-label="montant" placeholder="Montant">
+                    <input type="number" name="montant" class="form-control" aria-label="montant" placeholder="Montant">
                   </div>
                 <div class="text-center">
                   <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Valider</button>
                 </div>
-
               </form>
             </div>
           </div>
@@ -47,19 +59,20 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                        <?php for($i = 0;$i<count($listeDepense);$i++){ ?>
+                            <tr>
                         <td>
                           <div class="d-flex px-2 py-1">
                             <div class="d-flex flex-column justify-content-center">
-                              <h6 class="mb-0 text-sm">2</h6>
+                              <h6 class="mb-0 text-sm"><?php echo $listeDepense[$i]['nom']; ?></h6>
                             </div>
                           </div>
                         </td>
                         <td>
-                          <p class="text-xs font-weight-bold mb-0">1</p>
+                          <p class="text-xs font-weight-bold mb-0"><?php echo $listeDepense[$i]['date_depense']; ?></p>
                         </td>
                         <td class="align-middle text-center text-sm">
-                          <span class="badge badge-sm bg-gradient-success">2</span>
+                          <span class="badge badge-sm bg-gradient-success"><?php echo $listeDepense[$i]['montant']; ?></span>
                         </td>
                         <td class="align-middle">
                           <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
@@ -67,6 +80,8 @@
                           </a>
                         </td>
                       </tr>
+                        <?php  }?>
+                      
                     </tbody>
                   </table>
                 </div>

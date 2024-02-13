@@ -37,8 +37,9 @@ if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['t
   <?php require 'composant/aside.php'; ?>
   <main class="main-content position-relative min-height-vh-100 h-100 mt-1 border-radius-lg ">
     <?php require 'composant/top-bar.php'; ?>
+    <?php require 'composant/ajouterdepense.php'; ?>
     <?php require 'composant/ajoutcueillette.php'; ?>
-    <?php require 'composant/gestion-parcelle.php'; ?>
+ 
   </main>
    <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <?php require '../composant/footer.php'; ?>

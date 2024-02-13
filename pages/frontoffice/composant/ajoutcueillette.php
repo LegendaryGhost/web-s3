@@ -6,8 +6,10 @@
   $parcelle = getAllParcelles();
   $cueilleur = getAllCueilleurs();
 
+  $listeCueillette = getCueilletes();
 
-?>
+
+?>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 
 <div class="container tab-content active" data-toggle="ajoutcueillette">
     <div class="container">
@@ -31,7 +33,7 @@
                 <div class="mb-3">
                     <select name="Parcelle" id="idparcelle" class="form-control">
                        <?php for ($i = 0; $i< count($parcelle);$i++) {  ?>
-                          <option value= "<?php echo $parcelle[$i]['id']; ?>"><?php echo $parcelle[$i]['nom']; ?></option>
+                          <option value= "<?php echo $parcelle[$i]['id']; ?>"><?php echo $parcelle[$i]['nom_parcelle']; ?></option>
                         <?php } ?>
                        </select>
                 </div>
@@ -67,30 +69,33 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <div class="d-flex px-2 py-1">
-                            <div class="d-flex flex-column justify-content-center">
-                                <span class="text-secondary text-xs font-weight-bold">14/09/20</span>
-                              </td>
+                      <?php for($i = 0;$i<count($listeCueillette);$i++){ ?>
+                        <tr>
+                          <td>
+                            <div class="d-flex px-2 py-1">
+                              <div class="d-flex flex-column justify-content-center">
+                                  <span class="text-secondary text-xs font-weight-bold"><?php echo $listeCueillette[$i]['date_cueillette']; ?></span>
+                                </td>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="text-xs font-weight-bold mb-0">888</p>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          <span class="badge badge-sm bg-gradient-success">555</span>
-                        </td>
-                        <td>
-                          <p class="text-xs font-weight-bold mb-0">5555</p>
-                        </td>
-                        <td class="align-middle">
-                          <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                            Edit
-                          </a>
-                        </td>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0"><?php echo $listeCueillette[$i]['nomCueilleur']; ?></p>
+                          </td>
+                          <td class="align-middle text-center text-sm">
+                            <span class="badge badge-sm bg-gradient-success"><?php echo $listeCueillette[$i]['nomParcelle']; ?></span>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0"><?php echo $listeCueillette[$i]['poids']; ?></p>
+                          </td>
+                          <td class="align-middle">
+                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                              Edit
+                            </a>
+                          </td>
                       </tr>
+                      <?php }?>
+                      
                     </tbody>
                   </table>
                 </div>
@@ -101,10 +106,6 @@
       </div>
 </div>
 
-<script>
 
-
-
-</script>
 
 

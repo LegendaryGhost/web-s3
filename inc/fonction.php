@@ -42,18 +42,6 @@
         }
     }
 
-    function getAllTeaThe() {
-        $pdo = connection();
-        try {
-            $stmt = $pdo->prepare("SELECT * FROM tea_the");
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Erreur ! : " . $e->getMessage();
-            die();
-        }
-    }
-
     function getTeaTheById($id) {
         $pdo = connection();
         try {
@@ -666,14 +654,69 @@ function getResteACueillirByparcelleBydate($id,$mois,$annee){
         }
     } 
 
+    function insertIntoTeaDepense($idCategorie, $dateDepense, $montant) {
+        $pdo = connection();
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "INSERT INTO tea_depense (id_categorie, date_depense, montant) VALUES (:id_categorie, :date_depense, :montant)";
+            $stmt = $pdo->prepare($sql);
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':id_categorie', $idCategorie, PDO::PARAM_INT);
+            $stmt->bindParam(':date_depense', $dateDepense);
+            $stmt->bindParam(':montant', $montant);
+            
+            // Exécution de la requête
+            $stmt->execute();
+            echo "Dépense ajoutée avec succès.";
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la dépense : " . $e->getMessage();
+            die();
+        }
+    }
+
+
+    function getDepenses() {
+        $pdo = connection();
+        try {
+            // Préparation de la requête SQL pour sélectionner toutes les entrées de la vue v_depenses
+            $stmt = $pdo->prepare("SELECT id_categorie, nom, date_depense, montant FROM v_depenses");
+            
+            // Exécution de la requête
+            $stmt->execute();
+            
+            // Récupération des résultats sous forme d'un tableau associatif
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des dépenses : " . $e->getMessage();
+            die();
+        }
+    }
+
+    function getCueilletes() {
+        $pdo = connection();
+        try {
+            // Préparation de la requête SQL pour sélectionner toutes les entrées de la vue v_cueillete
+            $stmt = $pdo->prepare("SELECT id_cueilleur, nomCueilleur, id_parcelle, nomParcelle, date_cueillette, poids FROM v_cueillete");
+            
+            // Exécution de la requête
+            $stmt->execute();
+            
+            // Récupération des résultats sous forme d'un tableau associatif
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des cueillettes : " . $e->getMessage();
+            die();
+        }
+    }
+    
+
+
     
     
 
-
-
-
-    
-
-
-    
 ?>
