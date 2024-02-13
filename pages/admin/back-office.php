@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../inc/route.php';
+require_once '../../inc/fonction.php';
 
 session_start();
 
@@ -8,6 +9,8 @@ if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['t
   $message = "Vous n'avez pas l'autorisation d'accéder à cette page";
   header('Location: ' . MAIN_URL . 'pages/admin/?erreur=' . urlencode($message));
 }
+
+$cueilleurs = getAllCueilleurs();
 
 ?>
 
@@ -39,6 +42,7 @@ if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['t
     <?php require 'composant/top-bar.php'; ?>
     <?php require 'composant/gestion-the.php'; ?>
     <?php require 'composant/gestion-parcelle.php'; ?>
+    <?php require 'composant/gestion-cueilleur.php'; ?>
   </main>
    <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <?php require '../composant/footer.php'; ?>

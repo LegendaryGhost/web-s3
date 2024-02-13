@@ -36,6 +36,23 @@ const envoyerParcelleForm = event => {
     viderParcelleModifForm();
 };
 
+const envoyerCueilleurForm = event => {
+    event.preventDefault();
+    let form = event.target;
+
+    const actionDirUrl = form.action;
+    const actionFileName = form.dataset.action;
+    const formData = new FormData(form);
+
+    sendXHRRequest(actionDirUrl + actionFileName, 'POST', formData).then(
+        () => {
+            location.reload();
+            viderCueilleurModifForm();
+        }
+    );
+
+};
+
 const viderTheModifForm = () => {
     theForm.dataset.action = 'ajout-the.php';
     theForm.dataset.mode = 'ajout';
@@ -46,6 +63,12 @@ const viderParcelleModifForm = () => {
     parcelleForm.dataset.action = 'ajout-parcelle.php';
     parcelleForm.dataset.mode = 'ajout';
     parcelleForm.reset();
+};
+
+const viderCueilleurModifForm = () => {
+    cueilleurForm.dataset.action = 'ajout-cueilleur.php';
+    cueilleurForm.dataset.mode = 'ajout';
+    cueilleurForm.reset();
 };
 
 const preparerTheModifForm = (theId) => {
@@ -61,7 +84,7 @@ const preparerTheModifForm = (theId) => {
 };
 
 const preparerParcelleModifForm = (parcelleId) => {
-    const parcelle = parcelles.find(parcelle => parcelle.id == parcelleId);
+    const parcelle = cueilleurs.find(parcelle => parcelle.id == parcelleId);
     parcelleForm.dataset.action = 'modif-parcelle.php';
     parcelleForm.dataset.mode = 'modif';
 
@@ -70,6 +93,19 @@ const preparerParcelleModifForm = (parcelleId) => {
     parcelleForm.elements['idThe'].value = parcelle.id_the;
     parcelleForm.elements['nom'].value = parcelle.nom_parcelle;
     parcelleForm.elements['surface'].value = parcelle.surface;
+};
+
+const preparerCueilleurModifForm = (cueilleurId) => {
+    const cueilleur = cueilleurs.find(cueilleur => cueilleur.id == cueilleurId);
+    cueilleurForm.dataset.action = 'modif-cueilleur.php';
+    cueilleurForm.dataset.mode = 'modif';
+
+    // Fill in the cueilleurForm fields with the data from the 'the' object
+    cueilleurForm.elements['id'].value = cueilleur.id;
+    cueilleurForm.elements['nom'].value = cueilleur.nom;
+    cueilleurForm.elements['genre'].value = cueilleur.genre;
+    cueilleurForm.elements['dateNaissance'].value = cueilleur.date_naissance;
+    cueilleurForm.elements['salaire'].value = cueilleur.salaire;
 };
 
 const supprimerThe = event => {
@@ -272,29 +308,41 @@ const chargerVarietesThe = () => {
 const chargerParcelles = () => {
     sendXHRRequest(adminDir + '/parcelle/liste-parcelle.php').then(
         reponse => {
-            parcelles = JSON.parse(reponse);
-            genererParcellesLignes(parcelles);
+            cueilleurs = JSON.parse(reponse);
+            genererParcellesLignes(cueilleurs);
+        }
+    );
+}
+
+const chargerCueilleurs = () => {
+    sendXHRRequest(adminDir + '/cueilleur/liste-cueilleur.php').then(
+        reponse => {
+            cueilleurs = JSON.parse(reponse);
         }
     );
 }
 
 let theForm;
 let parcelleForm;
+let cueilleurForm;
 let theFormResetBtn;
 let parcelleFormResetBtn;
+let cueilleurFormResetBtn;
 let theListeTbody;
 let parcelleListeTbody;
 let theCrudDir;
 let parcelleCrudDir;
 let adminDir;
 let varietesThe = [];
-let parcelles = [];
+let cueilleurs = [];
 
 window.addEventListener('load', () => {
     theForm = document.getElementById('form-the');
     parcelleForm = document.getElementById('form-parcelle');
+    cueilleurForm = document.getElementById('form-cueilleur');
     theFormResetBtn = theForm.querySelector('button[type="reset"]');
     parcelleFormResetBtn = parcelleForm.querySelector('button[type="reset"]');
+    cueilleurFormResetBtn = cueilleurForm.querySelector('button[type="reset"]');
     theListeTbody = document.querySelector('#table-liste-the tbody');
     parcelleListeTbody = document.querySelector('#table-liste-parcelle tbody');
 
@@ -304,9 +352,20 @@ window.addEventListener('load', () => {
 
     chargerVarietesThe();
     chargerParcelles();
+    chargerCueilleurs();
+
+    const modifCueilleurBtns = document.querySelectorAll('#table-liste-cueilleur button[data-cueilleur-id]');
+    modifCueilleurBtns.forEach(button => {
+        button.addEventListener('click', event => {
+            const idCueilleur = event.target.dataset.cueilleurId;
+            preparerCueilleurModifForm(idCueilleur);
+        })
+    });
 
     theForm.addEventListener('submit', envoyerTheForm);
     parcelleForm.addEventListener('submit', envoyerParcelleForm);
+    cueilleurForm.addEventListener('submit', envoyerCueilleurForm);
     theFormResetBtn.addEventListener('click', viderTheModifForm);
     parcelleFormResetBtn.addEventListener('click', viderParcelleModifForm);
+    cueilleurFormResetBtn.addEventListener('click', viderCueilleurModifForm);
 });
