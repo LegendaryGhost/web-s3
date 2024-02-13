@@ -2,11 +2,12 @@
     require_once("connection.php");
 
     // null si tsy misy
-    function checkLoging($username,$mdp){
+    function checkLoging($username, $mdp, $type){
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("SELECT * FROM tea_user WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT * FROM tea_user WHERE username = :username AND type_user = :type");            
             $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':type', $type);
             $stmt->execute();
         
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,49 +25,78 @@
 
 
     // CRUD The
-    function createTeaThe($nom, $occupation, $rendementMensuel) {
+    function createTeaThe($nom, $occupation, $rendementMensuel, $prixVente) {
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("INSERT INTO tea_the (nom, occupation, rendement_mensuel) VALUES (:nom, :occupation, :rendementMensuel)");
+            $sql = "INSERT INTO tea_the (nom, occupation, rendement_mensuel, prix_vente) VALUES (:nom, :occupation, :rendement_mensuel, :prix_vente)";
+            $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':occupation', $occupation);
-            $stmt->bindParam(':rendementMensuel', $rendementMensuel);
+            $stmt->bindParam(':rendement_mensuel', $rendementMensuel);
+            $stmt->bindParam(':prix_vente', $prixVente);
             $stmt->execute();
-            echo "Nouvelle entrée créée avec succès.";
+            echo "Thé ajouté avec succès.";
         } catch (PDOException $e) {
-            echo "Erreur lors de la création : " . $e->getMessage();
-        }
-    }
-
-    function getTeaTheById($id) {
-        $pdo = connection();
-        try {
-            $stmt = $pdo->prepare("SELECT * FROM tea_the");
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result;
-        } catch (PDOException $e) {
-            echo "Erreur ! : " . $e->getMessage();
+            echo "Erreur lors de l'ajout du thé : " . $e->getMessage();
             die();
         }
     }
     
 
-    function updateTeaThe($id, $nom, $occupation, $rendementMensuel) {
+    function getTeaTheById($id) {
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("UPDATE tea_the SET nom = :nom, occupation = :occupation, rendement_mensuel = :rendement_mensuel WHERE id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->bindParam(':nom', $nom);
-            $stmt->bindParam(':occupation', $occupation);
-            $stmt->bindParam(':rendement_mensuel', $rendementMensuel);
+            $stmt = $pdo->prepare("SELECT * FROM tea_the WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
-            echo "Enregistrement mis à jour avec succès.";
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
         } catch (PDOException $e) {
-            echo "Erreur ! : " . $e->getMessage();
+            echo "Erreur lors de la récupération du thé : " . $e->getMessage();
             die();
         }
     }
+
+    function getAllTeaThe() {
+        $pdo = connection(); // Assurez-vous que cette fonction retourne votre objet PDO.
+        try {
+            // Préparation de la requête SQL pour récupérer toutes les informations
+            $stmt = $pdo->prepare("SELECT * FROM tea_the");
+            
+            // Exécution de la requête
+            $stmt->execute();
+            
+            // Récupération des résultats
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des thés : " . $e->getMessage();
+            die();
+        }
+    }
+    
+    
+    
+
+    function updateTeaThe($id, $nom, $occupation, $rendementMensuel, $prixVente) {
+        $pdo = connection();
+        try {
+            $sql = "UPDATE tea_the SET nom = :nom, occupation = :occupation, rendement_mensuel = :rendement_mensuel, prix_vente = :prix_vente WHERE id = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':occupation', $occupation);
+            $stmt->bindParam(':rendement_mensuel', $rendementMensuel);
+            $stmt->bindParam(':prix_vente', $prixVente);
+            $stmt->execute();
+            echo "Thé mis à jour avec succès.";
+        } catch (PDOException $e) {
+            echo "Erreur lors de la mise à jour du thé : " . $e->getMessage();
+            die();
+        }
+    }
+    
 
     function deleteTeaThe($id) {
         $pdo = connection();
@@ -573,8 +603,9 @@ function getResteACueillirByparcelleBydate($id,$mois,$annee){
         $donne = getTotalCueilleByDateByParcelle($id_parcelle,$dateRegener,$date);
         $infoParcelle = getParcelleInfoById($id_parcelle);
 
-        var_dump($donne);
-        var_dump($infoParcelle);
+       if($donne == false){
+        return $infoParcelle['total_kg_mois'];
+       }
 
         return $infoParcelle['total_kg_mois'] - $donne['totalPoidsCueilli'];
     }

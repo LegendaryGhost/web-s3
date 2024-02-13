@@ -50,12 +50,12 @@
                 <?php if(isset($_GET['erreur']) && !empty($_GET['erreur'])):?>
                   <div class="alert alert-danger" role="alert"><?= urldecode($_GET['erreur']) ?></div>
                 <?php endif; ?>
-                <input type="hidden" name="type" value="admin">
+                <input type="hidden" name="type" value="user">
                 <div class="mb-3">
-                  <input name="username" value="admin" type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon">
+                  <input name="username" value="user" type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon">
                 </div>
                 <div class="mb-3">
-                  <input name="mdp" value="1234" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                  <input name="mdp" value="4321" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
                 </div>
                 <div class="text-center">
                   <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Me connecter</button>
