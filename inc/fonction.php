@@ -2,11 +2,12 @@
     require_once("connection.php");
 
     // null si tsy misy
-    function checkLoging($username,$mdp){
+    function checkLoging($username, $mdp, $type){
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("SELECT * FROM tea_user WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT * FROM tea_user WHERE username = :username AND type_user = :type");            
             $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':type', $type);
             $stmt->execute();
         
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,72 +25,84 @@
 
 
     // CRUD The
-    function createTeaThe($nom, $occupation, $rendementMensuel) {
+    function createTeaThe($nom, $occupation, $rendementMensuel, $prixVente) {
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("INSERT INTO tea_the (nom, occupation, rendement_mensuel) VALUES (:nom, :occupation, :rendementMensuel)");
+            $sql = "INSERT INTO tea_the (nom, occupation, rendement_mensuel, prix_vente) VALUES (:nom, :occupation, :rendement_mensuel, :prix_vente)";
+            $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':occupation', $occupation);
-            $stmt->bindParam(':rendementMensuel', $rendementMensuel);
+            $stmt->bindParam(':rendement_mensuel', $rendementMensuel);
+            $stmt->bindParam(':prix_vente', $prixVente);
             $stmt->execute();
-            echo "Nouvelle entrée créée avec succès.";
+            echo "Thé ajouté avec succès.";
         } catch (PDOException $e) {
-            echo "Erreur lors de la création : " . $e->getMessage();
+            echo "Erreur lors de l'ajout du thé : " . $e->getMessage();
+            die();
         }
     }
 
     function getTeaTheById($id) {
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("SELECT * FROM tea_the");
+            $stmt = $pdo->prepare("SELECT * FROM tea_the WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result;
         } catch (PDOException $e) {
-            echo "Erreur ! : " . $e->getMessage();
+            echo "Erreur lors de la récupération du thé : " . $e->getMessage();
             die();
         }
     }
 
     function getAllTeaThe() {
-        $pdo = connection();
+        $pdo = connection(); // Assurez-vous que cette fonction retourne votre objet PDO.
         try {
+            // Préparation de la requête SQL pour récupérer toutes les informations
             $stmt = $pdo->prepare("SELECT * FROM tea_the");
+            
+            // Exécution de la requête
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Récupération des résultats
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result;
         } catch (PDOException $e) {
-            echo "Erreur ! : " . $e->getMessage();
+            echo "Erreur lors de la récupération des thés : " . $e->getMessage();
             die();
         }
     }
+    
+    
+    
 
-    function updateTeaThe($id, $nom, $occupation, $rendementMensuel) {
+    function updateTeaThe($id, $nom, $occupation, $rendementMensuel, $prixVente) {
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("UPDATE tea_the SET nom = :nom, occupation = :occupation, rendement_mensuel = :rendement_mensuel WHERE id = :id");
-            $stmt->bindParam(':id', $id);
+            $sql = "UPDATE tea_the SET nom = :nom, occupation = :occupation, rendement_mensuel = :rendement_mensuel, prix_vente = :prix_vente WHERE id = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':occupation', $occupation);
             $stmt->bindParam(':rendement_mensuel', $rendementMensuel);
+            $stmt->bindParam(':prix_vente', $prixVente);
             $stmt->execute();
-            echo "Enregistrement mis à jour avec succès.";
+            echo "Thé mis à jour avec succès.";
         } catch (PDOException $e) {
-            echo "Erreur ! : " . $e->getMessage();
+            echo "Erreur lors de la mise à jour du thé : " . $e->getMessage();
             die();
         }
     }
+    
 
     function deleteTeaThe($id) {
         $pdo = connection();
-        try {
-            $stmt = $pdo->prepare("DELETE FROM tea_the WHERE id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            echo "Enregistrement supprimé avec succès.";
-        } catch (PDOException $e) {
-            echo "Erreur ! : " . $e->getMessage();
-            die();
-        }
+        $stmt = $pdo->prepare("DELETE FROM tea_the WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        echo "La variété de thé a bien été supprimée.";
     }
 
 
@@ -103,7 +116,6 @@
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':surface', $surface);
             $stmt->execute();
-            echo "Parcelle créée avec succès.";
         } catch (PDOException $e) {
             echo "Erreur lors de la création de la parcelle : " . $e->getMessage();
             die();
@@ -126,13 +138,23 @@ function getParcelleById($id) {
 function getAllParcelles() {
     $pdo = connection();
     try {
-        $stmt = $pdo->query("SELECT * FROM tea_parcelle LEFT JOIN tea_the ON tea_parcelle.id_the = tea_the.id");
+        $stmt = $pdo->query("
+            SELECT
+                tea_parcelle.id,
+                tea_parcelle.nom AS nom_parcelle,
+                tea_parcelle.id_the,
+                tea_the.nom AS nom_the,
+                tea_parcelle.surface
+            FROM tea_parcelle
+            LEFT JOIN tea_the
+                ON tea_parcelle.id_the = tea_the.id");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Erreur lors de la récupération des parcelles : " . $e->getMessage();
         die();
     }
 }
+
 
 
     function updateParcelle($id, $idThe, $nom, $surface) {
@@ -144,7 +166,6 @@ function getAllParcelles() {
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':surface', $surface);
             $stmt->execute();
-            echo "Parcelle mise à jour avec succès.";
         } catch (PDOException $e) {
             echo "Erreur lors de la mise à jour de la parcelle : " . $e->getMessage();
             die();
@@ -584,8 +605,9 @@ function getResteACueillirByparcelleBydate($id,$mois,$annee){
         $donne = getTotalCueilleByDateByParcelle($id_parcelle,$dateRegener,$date);
         $infoParcelle = getParcelleInfoById($id_parcelle);
 
-        var_dump($donne);
-        var_dump($infoParcelle);
+       if($donne == false){
+        return $infoParcelle['total_kg_mois'];
+       }
 
         return $infoParcelle['total_kg_mois'] - $donne['totalPoidsCueilli'];
     }
@@ -627,14 +649,69 @@ function getResteACueillirByparcelleBydate($id,$mois,$annee){
         }
     } 
 
+    function insertIntoTeaDepense($idCategorie, $dateDepense, $montant) {
+        $pdo = connection();
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "INSERT INTO tea_depense (id_categorie, date_depense, montant) VALUES (:id_categorie, :date_depense, :montant)";
+            $stmt = $pdo->prepare($sql);
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':id_categorie', $idCategorie, PDO::PARAM_INT);
+            $stmt->bindParam(':date_depense', $dateDepense);
+            $stmt->bindParam(':montant', $montant);
+            
+            // Exécution de la requête
+            $stmt->execute();
+            echo "Dépense ajoutée avec succès.";
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la dépense : " . $e->getMessage();
+            die();
+        }
+    }
+
+
+    function getDepenses() {
+        $pdo = connection();
+        try {
+            // Préparation de la requête SQL pour sélectionner toutes les entrées de la vue v_depenses
+            $stmt = $pdo->prepare("SELECT id_categorie, nom, date_depense, montant FROM v_depenses");
+            
+            // Exécution de la requête
+            $stmt->execute();
+            
+            // Récupération des résultats sous forme d'un tableau associatif
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des dépenses : " . $e->getMessage();
+            die();
+        }
+    }
+
+    function getCueilletes() {
+        $pdo = connection();
+        try {
+            // Préparation de la requête SQL pour sélectionner toutes les entrées de la vue v_cueillete
+            $stmt = $pdo->prepare("SELECT id_cueilleur, nomCueilleur, id_parcelle, nomParcelle, date_cueillette, poids FROM v_cueillete");
+            
+            // Exécution de la requête
+            $stmt->execute();
+            
+            // Récupération des résultats sous forme d'un tableau associatif
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des cueillettes : " . $e->getMessage();
+            die();
+        }
+    }
+    
+
+
     
     
 
-
-
-
-    
-
-
-    
 ?>

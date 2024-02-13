@@ -1,17 +1,13 @@
 <?php
 
 require_once '../../inc/route.php';
-require_once '../../inc/fonction.php';
 
 session_start();
 
-if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['typeUser'] != 'admin') {
+if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['typeUser'] != 'user') {
   $message = "Vous n'avez pas l'autorisation d'accéder à cette page";
   header('Location: ' . MAIN_URL . 'pages/admin/?erreur=' . urlencode($message));
 }
-
-$cueilleurs = getAllCueilleurs();
-$categories = getAllCategoriesDepenses();
 
 ?>
 
@@ -41,10 +37,9 @@ $categories = getAllCategoriesDepenses();
   <?php require 'composant/aside.php'; ?>
   <main class="main-content position-relative min-height-vh-100 h-100 mt-1 border-radius-lg ">
     <?php require 'composant/top-bar.php'; ?>
-    <?php require 'composant/gestion-the.php'; ?>
-    <?php require 'composant/gestion-parcelle.php'; ?>
-    <?php require 'composant/gestion-cueilleur.php'; ?>
-    <?php require 'composant/insertion-categorie-depense.php'; ?>
+    <?php require 'composant/ajouterdepense.php'; ?>
+    <?php require 'composant/ajoutcueillette.php'; ?>
+ 
   </main>
    <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <?php require '../composant/footer.php'; ?>
@@ -55,7 +50,7 @@ $categories = getAllCategoriesDepenses();
   <script src="<?= JS ?>plugins/smooth-scrollbar.min.js"></script>
   <script src="<?= JS ?>plugins/chartjs.min.js"></script>
   <script src="<?= JS ?>xhr.js"></script>
-  <script src="<?= JS ?>crud-dashboard.js"></script>
+  <script src="<?= JS ?>crud-the.js"></script>
   <script src="<?= JS ?>admin-link.js"></script>
   
  <script>

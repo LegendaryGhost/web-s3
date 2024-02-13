@@ -6,15 +6,18 @@
                     <h5>Insertion de Parcelle</h5>
                 </div>
                 <div class="card-body">
-                    <form role="form text-left">
+                    <form role="form text-left" action="<?= MAIN_URL ?>inc/admin/parcelle/" data-action="ajout-parcelle.php" data-mode="ajout" id="form-parcelle">
+                        <input type="hidden" name="id">
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Nom" aria-label="Nom">
+                            <input name="nom" type="text" class="form-control" placeholder="Nom" aria-label="Nom">
                         </div>
                         <div class="mb-3">
-                            <input type="number" class="form-control" placeholder="Surface" aria-label="Surface">
+                            <input name="surface" min="0" step="0.01" type="number" class="form-control" placeholder="Surface" aria-label="Surface">
                         </div>
                         <div class="mb-3">
-                            <input type="number" class="form-control" placeholder="Total" aria-label="Total">
+                            <select name="idThe" id="idThe" class="form-control">
+                                <!-- Rempli en AJAX -->
+                            </select>
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn-ajout btn bg-gradient-success w-100 my-4 mb-2">Ajouter</button>

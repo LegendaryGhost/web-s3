@@ -98,5 +98,28 @@ LEFT JOIN
 ORDER BY 
     tea_mois.int_mois;
 
+CREATE OR REPLACE view v_depenses as
+Select 
+  td.id_categorie,
+  tcd.nom,
+  td.date_depense,
+  td.montant
+  from tea_depense as td
+  join tea_categorie_depense as tcd
+  on td.id_categorie = tcd.id;
 
+
+  Create or replace view v_cueillete as
+    select 
+      tc.id_cueilleur,
+      tceur.nom as nomCueilleur,
+      tc.id_parcelle,
+      tp.nom as nomParcelle,
+      tc.date_cueillette,
+      tc.poids
+    from tea_cueillette as tc
+    join tea_cueilleur as tceur
+    on tc.id_cueilleur = tceur.id
+    join tea_parcelle as tp
+    on tc.id_parcelle = tp.id;
 
