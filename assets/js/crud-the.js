@@ -39,7 +39,10 @@ const supprimerThe = event => {
     event.preventDefault();
     const formData = new FormData(event.target);
     sendXHRRequest(theCrudDir + 'effacer-the.php', 'POST', formData).then(
-        chargerVarietesThe
+        () => {
+            chargerVarietesThe();
+            viderModifForm();
+        }
     );
 };
 

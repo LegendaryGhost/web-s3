@@ -1,7 +1,19 @@
 
 /* Redéfinition */
+.alert-danger {
+    color: white;
+}
+
 .badge {
     font-size: 0.7rem;
+}
+
+.navbar-vertical.navbar-expand-xs {
+    overflow-y: unset;
+}
+
+body, a, p, strong, span, i, li, ol, button {
+    font-family: 'Roboto', sans-serif;
 }
 
 button {
@@ -12,4 +24,12 @@ form[data-mode="ajout"] .btn-modif,
 form[data-mode="ajout"] .btn-annuler,
 form[data-mode="modif"] .btn-ajout {
     display: none;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
