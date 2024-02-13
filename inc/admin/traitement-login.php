@@ -15,7 +15,7 @@
             $_SESSION['idUser'] = $user['iduser'];
             $_SESSION['typeUser'] = 'admin';
             
-            header("Location: " . MAIN_URL . "pages/admin/gestion-the.php");
+            header("Location: " . MAIN_URL . "pages/admin/back-office.php");
         }
     } else {
         $erreur = 'Veuillez remplir tous les champs';

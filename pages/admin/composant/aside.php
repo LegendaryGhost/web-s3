@@ -9,8 +9,8 @@
 <hr class="horizontal dark mt-0">
 <div class="collapse navbar-collapse  w-auto  max-height-vh-100 h-100" id="sidenav-collapse-main">
     <ul class="navbar-nav">
-    <li class="nav-item">
-        <a class="nav-link  active" href="InsertionThe.html">
+    <li class="nav-item" data-target="#gestion-the">
+        <a class="nav-link active" href="<?= MAIN_URL ?>pages/admin/gestion-the.php">
         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -25,11 +25,11 @@
                 </g>
             </svg>
         </div>
-        <span class="nav-link-text ms-1">Insertion de The</span>
+        <span class="nav-link-text ms-1">Gérer les variétés de thé</span>
         </a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link  " href="./InserttionParcelle.html">
+    <li class="nav-item" data-target="#gestion-parcelle">
+        <a class="nav-link  " href="<?= MAIN_URL ?>pages/admin/gestion-parcelle.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -44,7 +44,7 @@
                 </g>
             </svg>
             </div>
-            <span class="nav-link-text ms-1">Insertion de Parcelle</span>
+            <span class="nav-link-text ms-1">Gérer mes parcelles</span>
         </a>
         </li>
     <li class="nav-item">
