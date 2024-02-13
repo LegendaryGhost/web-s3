@@ -370,7 +370,7 @@ function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $po
         else{
             $reponse=[
                 'succes' => false,
-                'message' => 'Poids superieur au reste dans la parcelle'
+                'message' => 'Poids superieur au reste dans la parcelle.Il vous reste '.$reste.' à cueiller'
             ];
         }
         return $reponse;
