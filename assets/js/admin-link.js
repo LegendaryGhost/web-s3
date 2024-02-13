@@ -28,7 +28,6 @@ window.addEventListener('load', function() {
             const targetId = this.getAttribute('data-target').substring(1); // Enlève le # initial
             const targetContainer = document.getElementById(targetId);
             if (targetContainer) {
-                console.log(this.classList);
                 this.querySelector('.nav-link').classList.add('active');
                 targetContainer.classList.add('active');
             }

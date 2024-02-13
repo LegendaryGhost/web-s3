@@ -25,7 +25,7 @@
                 </g>
             </svg>
         </div>
-        <span class="nav-link-text ms-1">Gérer les variétés de thé</span>
+        <span class="nav-link-text ms-1">Gérer les thés</span>
         </a>
     </li>
     <li class="nav-item" data-target="#gestion-parcelle">
