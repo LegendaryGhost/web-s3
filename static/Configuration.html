@@ -161,7 +161,16 @@
                      </select>
                     </div>
                     <div class="mb-3">
-                      <input type="number" class="form-control" aria-label="Salaire">
+                      <input type="number" class="form-control" aria-label="Salaire" placeholder="Salaire">
+                    </div>
+                    <div class="mb-3">
+                      <input type="number" class="form-control" aria-label="Poids_minimal" placeholder="Poids_minimal">
+                    </div>
+                    <div class="mb-3">
+                      <input type="number" class="form-control" aria-label="Bonus" placeholder="Bonus">
+                    </div>
+                    <div class="mb-3">
+                      <input type="number" class="form-control" aria-label="Malus" placeholder="Malus">
                     </div>
                     <div class="text-center">
                       <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Valider</button>
@@ -183,9 +192,11 @@
                   <table class="table align-items-center mb-0">
                     <thead>
                       <tr>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id_Variete</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Occupation(en m^2)</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Rendement_Mensuel_par_mensuel(parpied)</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Salaire</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Poids_minimal</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Bonus</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Malus</th>
                         <th class="text-secondary opacity-7"></th>
                       </tr>
                     </thead>
@@ -194,15 +205,21 @@
                         <td>
                           <div class="d-flex px-2 py-1">
                             <div class="d-flex flex-column justify-content-center">
-                              <h6 class="mb-0 text-sm">1</h6>
+                              <h6 class="mb-0 text-sm">Paul</h6>
                             </div>
                           </div>
                         </td>
                         <td>
-                          <p class="text-xs font-weight-bold mb-0">m^2</p>
+                          <p class="text-xs font-weight-bold mb-0">4444</p>
                         </td>
-                        <td class="align-middle text-center text-sm">
-                          <span class="badge badge-sm bg-gradient-success">Rendement1</span>
+                        <td>
+                          <p class="text-xs font-weight-bold mb-0">4444</p>
+                        </td>
+                        <td>
+                          <span class="badge badge-sm bg-gradient-success">100</span>
+                        </td>
+                        <td>
+                          <p class="text-xs font-weight-bold mb-0">80</p>
                         </td>
                         <td class="align-middle">
                           <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
