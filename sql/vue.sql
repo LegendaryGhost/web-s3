@@ -37,9 +37,10 @@ JOIN
 GROUP BY 
     vp.id, vp.nomParcelle, vp.surface_m2, vp.nomthe, vp.nbpied, vp.total_kg_mois, MONTH(tc.date_cueillette), YEAR(tc.date_cueillette);
 
-Create or replace view v_tea_resteAcueillir as
+CREATE OR REPLACE VIEW v_tea_resteAcueillir AS
 SELECT 
   vpp.idparcelle,
+  vpp.nomparcelle,
   vpp.reste_a_cueillir,
   vpp.date_cueillette
 FROM 
@@ -47,9 +48,11 @@ FROM
 INNER JOIN (
     SELECT 
       idparcelle, 
-      MAX(date_cueillette) as MaxDate
+      MAX(date_cueillette) AS MaxDate
     FROM 
       v_poidsparcelle
+    WHERE 
+      date_cueillette <= '2024-02-28' -- Date de fin spécifiée ici
     GROUP BY 
       idparcelle
 ) vm ON vpp.idparcelle = vm.idparcelle AND vpp.date_cueillette = vm.MaxDate;

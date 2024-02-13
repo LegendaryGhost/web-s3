@@ -402,15 +402,52 @@ function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $po
             echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
             die();
         }
-
     }
 
-    function getTotalPoidsRestant(){
+    function getTotalPoidsRestant($dateFin){
         $pdo = connection();
         try {
             // Préparation de la requête d'insertion
-            $sql = "select sum(reste_a_cueillir) as reste_cueilletteTotal from v_tea_resteAcueillir;";
+            $sql = "SELECT 
+            vpp.reste_a_cueillir
+          FROM 
+            v_poidsparcelle vpp
+          INNER JOIN (
+              SELECT 
+                idparcelle, 
+                MAX(date_cueillette) AS MaxDate
+              FROM 
+                v_poidsparcelle
+              WHERE 
+                date_cueillette <= :datee -- Date de fin spécifiée ici
+              GROUP BY 
+                idparcelle
+          ) vm ON vpp.idparcelle = vm.idparcelle AND vpp.date_cueillette = vm.MaxDate;
+          ";
             $stmt = $pdo->prepare($sql);
+
+            $stmt->bindParam(':datee',$dateFin);
+            // Exécution de la requête
+            $stmt->execute();
+            $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $donne;
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+            die();
+        }
+    }
+
+    // la reponse est $variable['prixRevient']
+    function getPrixDeRevient($dateDebut,$dateFin){
+        $pdo = connection();
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "select sum(montant) as prixRevient from tea_depense where date_depense between :dateD and :dateF";
+            $stmt = $pdo->prepare($sql);
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':dateD', $dateDebut);
+            $stmt->bindParam(':dateF', $dateFin);
             // Exécution de la requête
             $stmt->execute();
             $donne = $stmt->fetch(PDO::FETCH_ASSOC);
