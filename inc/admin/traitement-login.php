@@ -9,16 +9,17 @@
 
         if (is_null($user)) {
             $erreur = 'Nom d\'utilisateur ou mot de passe incorrect';
-            header("Location: " . MAIN_URL . "pages/admin/login.php?erreur=" . urlencode($erreur));
+            header("Location: " . MAIN_URL . "pages/admin/?erreur=" . urlencode($erreur));
         } else {
             session_start();
-            $_SESSION['id_user'] = $user['iduser'];
-            // TODO: dashboard redirection
-            echo 'Connecte';
+            $_SESSION['idUser'] = $user['iduser'];
+            $_SESSION['typeUser'] = 'admin';
+            
+            header("Location: " . MAIN_URL . "pages/admin/back-office.php");
         }
     } else {
         $erreur = 'Veuillez remplir tous les champs';
-        header("Location: " . MAIN_URL . "pages/admin/login.php?erreur=" . urlencode($erreur));
+        header("Location: " . MAIN_URL . "pages/admin/?erreur=" . urlencode($erreur));
     }
 
 ?>

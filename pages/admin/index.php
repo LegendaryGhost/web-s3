@@ -26,7 +26,7 @@
 
 <body class="g-sidenav-show  bg-gray-100">
 
-  <section class="min-vh-100">
+  <section style="min-height: calc(100vh - 80px)">
     <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" style="background-image: url('<?= IMG ?>The.jpg');">
       <span class="mask bg-gradient-dark opacity-6"></span>
       <div class="container">
@@ -67,39 +67,7 @@
     </div>
   </section>
   <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
-  <footer class="footer py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mb-4 mx-auto text-center">
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-            ETU 002711 Landy
-          </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-            ETU 003057 Tiarintsoa
-          </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-            ETU 002711 Landy
-        </div>
-        <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
-            <span class="text-lg fab fa-dribbble"></span>
-          </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
-            <span class="text-lg fab fa-twitter"></span>
-          </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
-            <span class="text-lg fab fa-instagram"></span>
-          </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
-            <span class="text-lg fab fa-pinterest"></span>
-          </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
-            <span class="text-lg fab fa-github"></span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <?php require '../composant/footer.php'; ?>
   <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <!--   Core JS Files   -->
   <script src="<?= JS ?>core/popper.min.js"></script>

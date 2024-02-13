@@ -58,4 +58,45 @@ INNER JOIN (
 ) vm ON vpp.idparcelle = vm.idparcelle AND vpp.date_cueillette = vm.MaxDate;
 
 select sum(reste_a_cueillir) as reste_cueilletteTotal from v_tea_resteAcueillir;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+SELECT
+    id_parcelle,
+    SUM(poids) AS totalPoidsCueilli
+FROM
+    tea_cueillette
+WHERE
+    date_cueillette >= '2023-03-01' AND
+    date_cueillette <= '2023-06-30'
+GROUP BY
+    id_parcelle;
+
+
+SELECT
+    id_parcelle,
+    SUM(poids) AS totalPoidsCueilli
+FROM
+    tea_cueillette
+WHERE
+    date_cueillette >= '2024-01-01' AND
+    date_cueillette <= '2024-06-15'
+GROUP BY
+    id_parcelle;
+
+
+CREATE or REPLACE view v_regenerer as
+SELECT 
+    tea_mois.int_mois,
+    tea_mois.mois,
+    CASE 
+        WHEN tea_mois_regenererer.int_mois IS NULL THEN 0 
+        ELSE 1 
+    END AS regeneration
+FROM 
+    tea_mois 
+LEFT JOIN 
+    tea_mois_regenererer ON tea_mois.int_mois = tea_mois_regenererer.int_mois
+ORDER BY 
+    tea_mois.int_mois;
+
+
 
