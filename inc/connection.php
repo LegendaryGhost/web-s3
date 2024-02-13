@@ -1,7 +1,7 @@
 <?php
 
     function connection(){
-        $config = require 'config_base.php';
+        $config = require 'config/base.php';
         
         static $connection = null;
         if ($connection === null) {

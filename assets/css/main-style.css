@@ -1,0 +1,15 @@
+
+/* Redéfinition */
+.badge {
+    font-size: 0.7rem;
+}
+
+button {
+    border: none;
+}
+
+form[data-mode="ajout"] .btn-modif,
+form[data-mode="ajout"] .btn-annuler,
+form[data-mode="modif"] .btn-ajout {
+    display: none;
+}

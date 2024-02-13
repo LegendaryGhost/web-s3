@@ -2,11 +2,12 @@
     require_once("connection.php");
 
     // null si tsy misy
-    function checkLoging($username,$mdp){
+    function checkLoging($username, $mdp, $type){
         $pdo = connection();
         try {
-            $stmt = $pdo->prepare("SELECT * FROM tea_user WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT * FROM tea_user WHERE username = :username AND type_user = :type");
             $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':type', $type);
             $stmt->execute();
         
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -30,7 +31,6 @@ function createTeaThe($nom, $occupation, $rendementMensuel) {
         $stmt->bindParam(':occupation', $occupation);
         $stmt->bindParam(':rendementMensuel', $rendementMensuel);
         $stmt->execute();
-        echo "Nouvelle entrée créée avec succès.";
     } catch (PDOException $e) {
         echo "Erreur lors de la création : " . $e->getMessage();
     }
@@ -39,7 +39,7 @@ function createTeaThe($nom, $occupation, $rendementMensuel) {
 function getTeaTheById($id) {
     $pdo = connection();
     try {
-        $stmt = $pdo->prepare("SELECT * FROM tea_the");
+        $stmt = $pdo->prepare("SELECT * FROM tea_the Where id = ?", array($id));
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
@@ -48,6 +48,19 @@ function getTeaTheById($id) {
         die();
     }
 }
+
+function getAllTeaThe() {
+    $pdo = connection();
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM tea_the");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Erreur ! : " . $e->getMessage();
+        die();
+    }
+}
+
 
 
 function updateTeaThe($id, $nom, $occupation, $rendementMensuel) {
@@ -59,7 +72,6 @@ function updateTeaThe($id, $nom, $occupation, $rendementMensuel) {
         $stmt->bindParam(':occupation', $occupation);
         $stmt->bindParam(':rendement_mensuel', $rendementMensuel);
         $stmt->execute();
-        echo "Enregistrement mis à jour avec succès.";
     } catch (PDOException $e) {
         echo "Erreur ! : " . $e->getMessage();
         die();
@@ -370,7 +382,7 @@ function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $po
         else{
             $reponse=[
                 'succes' => false,
-                'message' => 'Poids superieur au reste dans la parcelle'
+                'message' => 'Poids superieur au reste dans la parcelle.Il vous reste '.$reste.' à cueiller'
             ];
         }
         return $reponse;
@@ -380,4 +392,79 @@ function insertIntoTeaCueillette($idCueilleur, $idParcelle, $dateCueillette, $po
         die();
     }
 } 
+
+    // la reponse est $variable['TotalCueilli']
+    function getTotalPoidsBtwDate($datedebut,$dateFin){
+        $pdo = connection();
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "select sum(total_poids_cueilli) as TotalCueilli from v_poidsparcelle where date_cueillette between :dateDebut and :dateFin";
+            $stmt = $pdo->prepare($sql);
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':dateDebut', $datedebut);
+            $stmt->bindParam(':dateFin', $dateFin);
+            // Exécution de la requête
+            $stmt->execute();
+            $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $donne;
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+            die();
+        }
+    }
+
+    function getTotalPoidsRestant($dateFin){
+        $pdo = connection();
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "SELECT 
+            vpp.reste_a_cueillir
+          FROM 
+            v_poidsparcelle vpp
+          INNER JOIN (
+              SELECT 
+                idparcelle, 
+                MAX(date_cueillette) AS MaxDate
+              FROM 
+                v_poidsparcelle
+              WHERE 
+                date_cueillette <= :datee -- Date de fin spécifiée ici
+              GROUP BY 
+                idparcelle
+          ) vm ON vpp.idparcelle = vm.idparcelle AND vpp.date_cueillette = vm.MaxDate;
+          ";
+            $stmt = $pdo->prepare($sql);
+
+            $stmt->bindParam(':datee',$dateFin);
+            // Exécution de la requête
+            $stmt->execute();
+            $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $donne;
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+            die();
+        }
+    }
+
+    // la reponse est $variable['prixRevient']
+    function getPrixDeRevient($dateDebut,$dateFin){
+        $pdo = connection();
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "select sum(montant) as prixRevient from tea_depense where date_depense between :dateD and :dateF";
+            $stmt = $pdo->prepare($sql);
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':dateD', $dateDebut);
+            $stmt->bindParam(':dateF', $dateFin);
+            // Exécution de la requête
+            $stmt->execute();
+            $donne = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $donne;
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la cueillette : " . $e->getMessage();
+            die();
+        }
+    }
 ?>
