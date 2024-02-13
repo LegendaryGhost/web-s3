@@ -11,6 +11,7 @@ if (!isset($_SESSION['idUser']) || !isset($_SESSION['typeUser']) || $_SESSION['t
 }
 
 $cueilleurs = getAllCueilleurs();
+$categories = getAllCategoriesDepenses();
 
 ?>
 
@@ -43,6 +44,7 @@ $cueilleurs = getAllCueilleurs();
     <?php require 'composant/gestion-the.php'; ?>
     <?php require 'composant/gestion-parcelle.php'; ?>
     <?php require 'composant/gestion-cueilleur.php'; ?>
+    <?php require 'composant/insertion-categorie-depense.php'; ?>
   </main>
    <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <?php require '../composant/footer.php'; ?>
