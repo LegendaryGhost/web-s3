@@ -35,6 +35,14 @@ const preparerModifForm = (theId) => {
     theForm.elements['rendement'].value = the.rendement_mensuel;
 };
 
+const supprimerThe = event => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    sendXHRRequest(theCrudDir + 'effacer-the.php', 'POST', formData).then(
+        chargerVarietesThe
+    );
+};
+
 const genereThesLignes = (thes) => {
     theListeTbody.textContent = '';
 
@@ -99,7 +107,8 @@ const genereThesLignes = (thes) => {
         var tdDelete = document.createElement('td');
         tdDelete.className = 'align-middle';
         var formDelete = document.createElement('form');
-        formDelete.action = `${theCrudDir}/inc/admin/the/effacer-the.php`;
+        formDelete.addEventListener('submit', supprimerThe);
+        formDelete.action = `${theCrudDir}effacer-the.php`;
         formDelete.method = 'post';
         var inputHidden = document.createElement('input');
         inputHidden.type = 'hidden';
