@@ -21,7 +21,7 @@ if (!isset($_SESSION['idUser'])) {
   <link rel="apple-touch-icon" sizes="76x76" href="<?= IMG ?>apple-icon.png">
   <link rel="icon" type="image/png" href="<?= IMG ?>favicon.png">
   <title>
-    Tableau de bord
+    Insertion de données
   </title>
   <!-- Nucleo Icons -->
   <link href="<?= CSS ?>nucleo-icons.css" rel="stylesheet" />
